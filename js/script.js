@@ -43,13 +43,13 @@ function fetchMovies (event){
         }
         searchInput.value = '';
         displayMatches(matches);
-        fetch().then(function(responseObj){
-            var dataPromise = responseObj.json();
+        // fetch().then(function(responseObj){
+        //     var dataPromise = responseObj.json();
 
-            dataPromise.then(function(data){
+        //     dataPromise.then(function(data){
 
-            });
-        });
+        //     });
+        // });
         
     }
 }
