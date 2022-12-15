@@ -1,67 +1,54 @@
-// Vanila JS
-var searchInput = document.querySelector('.search');
-var cardWrapper = document.querySelector('main');
+
+// JQuery
+var searchInput = $('.search');
+var cardWrapper = $('main');
 
 function noMatch() {
-    cardWrapper.innerHTML = '<p class="no-search">No results found </p>'
+  cardWrapper.html('<p class="no-search">No results found.</p>');
 }
 
 function displayMatches(matches) {
-    cardWrapper.innerHTML = '';
+  cardWrapper.html('');
 
-    if (!matches) {
-        noMatch()
-    } else {
-        for (var matchObj of matches) {
-            cardWrapper.insertAdjacentHTML('beforeend', `
-            <div class="movie-card" style="background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
-            url(${matchObj.Poster});">
-            <h3>${matchObj.Title}</h3>
-            <p>RElease year: ${matchObj.Year}</p>
-            <a href="https://www.imdb.com/title/${matchObj.imdbID}" target='_blank'>View more info</a>
-            </div> `);
-    
-        }
+  if (!matches) {
+    noMatch();
+  } else {
+    for (var matchObj of matches) {
+      cardWrapper.append(`
+      <div class="movie-card" style="background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(${matchObj.Poster});">
+        <h3>${matchObj.Title}</h3>
+        <p>Release Year: ${matchObj.Year}</p>
+        <a href="https://www.imdb.com/title/${matchObj.imdbID}" target="_blank">View More Info Here</a>
+      </div>
+      `);
     }
-
-
-
+  }
 }
-
 
 function fetchMovies(event) {
-    var keyCode = event.keyCode;
-    var searchText = searchInput.value.toLowerCase().trim();
+  var keyCode = event.keyCode;
+  var searchText = searchInput.val().trim();
 
-    if (keyCode === 13 && searchText) {
+  if (keyCode === 13 && searchText) {
 
-        var respnsePromise = fetch(`https://www.omdbapi.com/?apikey=20dc4c7f&s=${searchText}`);
+    $.get(`https://www.omdbapi.com/?apikey=20dc4c7f&s=${searchText}`)
+      .then(function (data) {
+        displayMatches(data.Search);
+        searchInput.val('');
+      });
 
-        function handleResponse(responseObj) {
-            return responseObj.json()
-        }
-
-        respnsePromise
-            .then(handleResponse)
-            .then(function (data) {
-                displayMatches(data.Search)
-                searchInput.value = '';
-            });
-
-
-
-    }
+  }
 }
 
-
 function init() {
-    searchInput.addEventListener('keydown', fetchMovies);
+  searchInput.keydown(fetchMovies);
 }
 
 init();
 
 
-// JQuery
+
+
 
 
 
