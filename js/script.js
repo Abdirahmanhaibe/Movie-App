@@ -61,7 +61,6 @@ function init() {
 init();
 
 
-// JQuery
 
 
 
